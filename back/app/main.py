@@ -1,7 +1,6 @@
-from datetime import datetime
 import uvicorn
 from fastapi import FastAPI
-from routes import product_router
+from .routes import product_router
 
 app = FastAPI()
 

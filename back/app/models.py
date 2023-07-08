@@ -1,6 +1,6 @@
 from sqlalchemy import Float, Column, DateTime, Integer, String
 
-from database import Base
+from .database import Base
 
 
 class Product(Base):
@@ -12,4 +12,14 @@ class Product(Base):
     product = Column(String)
     value = Column(Float)
     seller = Column(String)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "type": self.type,
+            "date": self.date,
+            "product": self.product,
+            "value": self.value,
+            "seller": self.seller
+        }
 
