@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+    api: 
+        build:
+            context: ./
+            dockerfile: ./back/Dockerfile
+        ports:
+            - 8000:8000
+        container_name: fs-afiliados-api
+        depends_on:
+            - db
+        networks:
+            - fs-afiliados
+        env_file:
+            - ./back/.env
+        environment:
+            ENVIRONMENT: development
+      
+    db:
+        image: "postgres"
+        env_file: 
+            - ./back/.env
+        container_name: fs-afiliados-db
+        restart: always
+        networks:
+            - fs-afiliados
+
+networks:
+    fs-afiliados:
+        driver: bridge
+
