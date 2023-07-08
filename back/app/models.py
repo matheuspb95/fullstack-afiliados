@@ -1,6 +1,6 @@
 from sqlalchemy import Float, Column, DateTime, Integer, String
 
-from .database import Base
+from database import Base
 
 
 class Product(Base):
