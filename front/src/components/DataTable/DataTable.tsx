@@ -5,6 +5,14 @@ interface DataTableProps {
   data: [];
 }
 
+interface Item {
+  type: number;
+  date: Date;
+  product: string;
+  value: number;
+  seller: string;
+}
+
 function DataTable({ data }: DataTableProps) {
   return (
     <>
@@ -16,7 +24,7 @@ function DataTable({ data }: DataTableProps) {
           <th>Value</th>
           <th>Seller</th>
         </tr>
-        {data.map((item: any) => {
+        {data.map((item: Item) => {
           return (
             <tr>
               <td>{item.type}</td>
@@ -40,8 +48,10 @@ function DataTable({ data }: DataTableProps) {
           currency: "BRL",
         }).format(
           data.reduce(
-            (accumulator, currentValue: any) =>
-              accumulator + currentValue.value,
+            (accumulator, item: Item) =>
+              item.type == 3
+                ? accumulator - item.value
+                : accumulator + item.value,
             0
           )
         )}
