@@ -1,6 +1,15 @@
 version: '3.7'
 
 services:
+    web:
+        build: 
+            context: ./front
+            dockerfile: ./Dockerfile
+        container_name: fs-afiliados-web
+        ports:
+        - "80:80" 
+        networks:
+            - fs-afiliados
     api: 
         build:
             context: ./back

@@ -1,5 +1,5 @@
 ## Descrição
-Backend desafio coodesh
+Coodesh challenge backend
 
 # Estrutura
 
@@ -22,8 +22,13 @@ Backend desafio coodesh
 ```
 
 # Rotas
+http://0.0.0.0:8000/docs
+
 ![Alt text](image.png)
 `/product/files`
-Rota POST para salvamento na API de arquivos com informações sobre venda de produtos
+
+POST route for saving in the API of files with information about product sales
+
 `/product/list`
-Rota GET retornando lista de vendas de produtos salvas na API
+
+GET route returning product sales list saved in API

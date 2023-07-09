@@ -23,6 +23,7 @@ aplicação. O formato esá descrito na seção "Formato do arquivo de entrada".
 - React
 
 ## Instalação
+docker compose up --build --force-recreate
 
 ## Referencia
 
