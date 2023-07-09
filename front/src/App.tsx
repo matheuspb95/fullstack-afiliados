@@ -1,70 +1,63 @@
 import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import UploadFormFile from "./components/UploadFileForm/UploadFileForm";
+import DataTable from "./components/DataTable/DataTable";
+import Loading from "./components/Loading/Loading";
+import Alert from "./components/Alert/Alert";
 
 const API_URL = "http://0.0.0.0:8000";
 
 function App() {
-  const [loaded, setLoaded] = useState([]);
+  const [data, setData] = useState<[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState({ show: false, message: "" });
 
-  const handleChange = (fileInput: any) => {
-    console.log(fileInput);
+  const handleChange = (fileInput: FileList) => {
     const file = fileInput[0];
     const formData = new FormData();
     formData.append("file", file);
+    setLoading(true);
+
     fetch(API_URL + "/product/file", {
       method: "POST",
       body: formData,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
-          return response.json();
+          response.json().then((data) => {
+            console.log(data);
+            setData(data);
+            setLoading(false);
+            setShowAlert({ show: true, message: "File Loaded" });
+          });
         } else {
-          throw new Error("File upload failed");
+          setShowAlert({
+            show: true,
+            message: await response.json().then((data) => data.detail),
+          });
+          setLoading(false);
         }
       })
-      .then((data) => {
-        setLoaded(data);
-        console.log("Server response:", data);
-      })
-      .catch((error) => {
-        console.error("Error uploading file:", error);
+      .catch((error: Error) => {
+        setShowAlert({ show: true, message: error.message });
+        setLoading(false);
       });
   };
 
   return (
     <div className="App">
-      {loaded.length > 0 ? (
-        <table>
-          <tr>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Product</th>
-            <th>Value</th>
-            <th>Seller</th>
-          </tr>
-          {loaded.map((item: any) => {
-            return (
-              <tr>
-                <td>{item.type}</td>
-                <td>{item.date}</td>
-                <td>{item.product}</td>
-                <td>{item.value}</td>
-                <td>{item.seller}</td>
-              </tr>
-            );
-          })}
-        </table>
+      {loading && <Loading />}
+      {data && data.length > 0 ? (
+        <div className="Table">
+          <DataTable data={data} />
+          <button onClick={() => setData([])}>RETORNAR</button>
+        </div>
       ) : (
-        <form>
-          <label htmlFor="input-file">Select data file</label>
-          <input
-            id="input-file"
-            type="file"
-            accept="text/plain"
-            onChange={(e) => handleChange(e.target.files)}
-          />
-        </form>
+        <UploadFormFile handleChange={handleChange} />
+      )}
+      {showAlert.show && (
+        <Alert setShowAlert={setShowAlert}>{showAlert.message}</Alert>
       )}
     </div>
   );
