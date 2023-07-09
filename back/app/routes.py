@@ -28,7 +28,7 @@ async def create_upload_file(file: UploadFile, db: Session = Depends(get_db)):
                     "seller": item[66: 86].strip()
                 }))
             except Exception:
-                raise HTTPException(status_code=400, detail="Worng file contents")
+                raise HTTPException(status_code=400, detail="Wrong file contents")
     return products
 
 @product_router.get("/product/list", tags=["products"])
